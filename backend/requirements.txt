@@ -1,0 +1,6 @@
+django
+django-ninja
+django-ninja-jwt
+django-ninja-extra
+django-cors-headers
+psycopg[binary]
