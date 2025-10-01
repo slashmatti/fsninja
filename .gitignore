@@ -1,0 +1,51 @@
+# -----------------------------
+# Python / Django
+# -----------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Virtualenvs
+venv/
+env/
+.venv/
+
+# Django static files
+staticfiles/
+media/
+
+# Logs
+*.log
+
+# -----------------------------
+# Node / React
+# -----------------------------
+node_modules/
+build/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -----------------------------
+# Environment & Secrets
+# -----------------------------
+.env
+*.env
+
+# -----------------------------
+# OS / IDE / Misc
+# -----------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# -----------------------------
+# Docker / Compose artifacts
+# -----------------------------
+**/__pycache__/
+postgres_data/
