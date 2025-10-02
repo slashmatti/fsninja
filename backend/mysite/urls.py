@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from ninja_extra import NinjaExtraAPI
 from users.auth_controller import AuthController
+from sensors.api import SensorController
+from readings.api import ReadingController
 
 api = NinjaExtraAPI()
 
-# Register our custom Auth controller
-api.register_controllers(AuthController)
+api.register_controllers(AuthController, SensorController, ReadingController)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
