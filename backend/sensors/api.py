@@ -1,101 +1,62 @@
 # sensors/api.py
-from datetime import datetime
 from typing import List, Optional
-
-from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from django.core.paginator import Paginator
-from ninja import Schema, Field
+from ninja import Schema
 from ninja_extra import api_controller, route
 from ninja_jwt.authentication import JWTAuth
+from ninja.pagination import paginate, PageNumberPagination
 
 from sensors.models import Sensor
-from readings.models import Reading
 
-# --- Schemas ---
+# ✅ Pydantic schemas
+class SensorIn(Schema):
+    name: str
+    model: str
+    description: Optional[str] = None
 
-class SensorCreateSchema(Schema):
-    name: str = Field(..., example="Office Sensor A")
-    model: str = Field(..., example="DHT22")
-    description: Optional[str] = Field(None, example="Temperature sensor in office")
-
-class SensorOutSchema(Schema):
+class SensorOut(Schema):
     id: int
     name: str
     model: str
     description: Optional[str]
-
-class PaginatedSensors(Schema):
-    total: int
-    page: int
-    page_size: int
-    results: List[SensorOutSchema]
-
+    owner_id: int
 
 @api_controller("/sensors", tags=["Sensors"], auth=JWTAuth())
 class SensorController:
+    """Endpoints for managing sensors"""
 
-    @route.get("/", response=PaginatedSensors)
-    def list_sensors(
-        self, request, page: int = 1, page_size: int = 10, q: Optional[str] = None
-    ):
-        """
-        List sensors owned by the current user.
-
-        - **q**: Optional search term to match name or model.
-        """
+    @route.get("/", response=List[SensorOut])
+    @paginate(PageNumberPagination, page_size=10)
+    def list_sensors(self, request, q: Optional[str] = None):
+        """List sensors (paginated). Supports ?q=search by name/model."""
         sensors = Sensor.objects.filter(owner=request.auth)
         if q:
             sensors = sensors.filter(Q(name__icontains=q) | Q(model__icontains=q))
+        return sensors.order_by("id")
 
-        paginator = Paginator(sensors, page_size)
-        page_obj = paginator.get_page(page)
+    @route.post("/", response=SensorOut)
+    def create_sensor(self, request, payload: SensorIn):
+        """Create a new sensor"""
+        sensor = Sensor.objects.create(owner=request.auth, **payload.dict())
+        return sensor
 
-        return {
-            "total": paginator.count,
-            "page": page,
-            "page_size": page_size,
-            "results": [SensorOutSchema.from_orm(s) for s in page_obj],
-        }
-
-    @route.post("/", response={201: SensorOutSchema})
-    def create_sensor(self, request, payload: SensorCreateSchema):
-        """
-        Create a new sensor.
-        """
-        sensor = Sensor.objects.create(
-            owner=request.auth,
-            name=payload.name,
-            model=payload.model,
-            description=payload.description,
-        )
-        return 201, SensorOutSchema.from_orm(sensor)
-
-    @route.get("/{sensor_id}/", response=SensorOutSchema)
+    @route.get("/{sensor_id}/", response=SensorOut)
     def get_sensor(self, request, sensor_id: int):
-        """
-        Retrieve details of a specific sensor.
-        """
-        sensor = get_object_or_404(Sensor, id=sensor_id, owner=request.auth)
-        return SensorOutSchema.from_orm(sensor)
+        """Get details of a sensor"""
+        return Sensor.objects.get(id=sensor_id, owner=request.auth)
 
-    @route.put("/{sensor_id}/", response=SensorOutSchema)
-    def update_sensor(self, request, sensor_id: int, payload: SensorCreateSchema):
-        """
-        Update a sensor's details.
-        """
-        sensor = get_object_or_404(Sensor, id=sensor_id, owner=request.auth)
-        sensor.name = payload.name
-        sensor.model = payload.model
-        sensor.description = payload.description
+    @route.put("/{sensor_id}/", response=SensorOut)
+    def update_sensor(self, request, sensor_id: int, payload: SensorIn):
+        """Update a sensor"""
+        sensor = Sensor.objects.get(id=sensor_id, owner=request.auth)
+        for field, value in payload.dict().items():
+            setattr(sensor, field, value)
         sensor.save()
-        return SensorOutSchema.from_orm(sensor)
+        return sensor
 
     @route.delete("/{sensor_id}/", response={204: None})
     def delete_sensor(self, request, sensor_id: int):
-        """
-        Delete a sensor and cascade delete its readings.
-        """
-        sensor = get_object_or_404(Sensor, id=sensor_id, owner=request.auth)
+        """Delete a sensor (cascade deletes readings)"""
+        sensor = Sensor.objects.get(id=sensor_id, owner=request.auth)
         sensor.delete()
         return 204, None
