@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from ninja import Router, Schema
 from ninja.errors import HttpError
+from ninja_jwt.authentication import JWTAuth
 
 router = Router()
 
