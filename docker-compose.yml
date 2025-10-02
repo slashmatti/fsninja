@@ -5,7 +5,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/app
     depends_on:
       db:
         condition: service_healthy
@@ -34,7 +34,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./frontend:/app/frontend
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - web
 
