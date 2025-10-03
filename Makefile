@@ -19,4 +19,4 @@ test:
 
 # Seed database with initial data
 seed:
-	$(DOCKER_COMPOSE) run --rm web python manage.py load_readings seed/sensor_readings_wide.csv
+	$(DOCKER_COMPOSE) run --rm web python manage.py seed_data
