@@ -1,0 +1,312 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Layout */
+  .layout {
+    min-height: 100vh;
+  }
+  
+  .header {
+    background: #2c3e50;
+    color: white;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+  }
+  
+  .header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .nav a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .logout-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Auth Pages */
+  .auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+  }
+  
+  .auth-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .auth-form h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  
+  button:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+  }
+  
+  button:hover:not(:disabled) {
+    background: #2980b9;
+  }
+  
+  .error-message {
+    background: #e74c3c;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Sensors List */
+  .page-header {
+    margin-bottom: 2rem;
+  }
+  
+  .page-header h1 {
+    color: #2c3e50;
+  }
+  
+  .add-sensor-section,
+  .filters-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sensor-form,
+  .search-form {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: end;
+  }
+  
+  .sensor-form input,
+  .search-form input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .sensors-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+  
+  .sensor-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sensor-info h3 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .sensor-info h3 a {
+    color: #2c3e50;
+    text-decoration: none;
+  }
+  
+  .sensor-info h3 a:hover {
+    color: #3498db;
+  }
+  
+  .sensor-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background: #3498db;
+    color: white;
+  }
+  
+  .btn-danger {
+    background: #e74c3c;
+    color: white;
+  }
+  
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .pagination button {
+    width: auto;
+    padding: 0.5rem 1rem;
+  }
+  
+  /* Sensor Detail */
+  .sensor-detail .page-header {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart-section,
+  .add-reading-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reading-form .form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .reading-form .form-group {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  /* Chart Controls */
+  .chart-controls {
+    margin-bottom: 1rem;
+  }
+  
+  .chart-controls .filters {
+    display: flex;
+    gap: 1rem;
+    align-items: end;
+    flex-wrap: wrap;
+  }
+  
+  .chart-controls label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .no-data {
+    text-align: center;
+    padding: 2rem;
+    color: #7f8c8d;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    color: #7f8c8d;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header .container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .sensor-form,
+    .search-form {
+      flex-direction: column;
+    }
+    
+    .reading-form .form-row {
+      flex-direction: column;
+    }
+    
+    .sensors-grid {
+      grid-template-columns: 1fr;
+    }
+  }
