@@ -1,6 +1,6 @@
-# readings/api.py
 from typing import List, Optional
 from datetime import datetime
+from django.shortcuts import get_object_or_404
 from ninja import Schema
 from ninja_extra import api_controller, route
 from ninja_jwt.authentication import JWTAuth
@@ -22,21 +22,20 @@ class ReadingOut(Schema):
     timestamp: datetime
     sensor_id: int
 
-@api_controller("/sensors", tags=["Readings"], auth=JWTAuth())
+@api_controller("/sensors/{sensor_id}/readings", tags=["Readings"], auth=JWTAuth())
 class ReadingController:
     """Endpoints for sensor readings"""
 
-    @route.get("/{sensor_id}/readings/", response=List[ReadingOut])
+    @route.get("/", response=List[ReadingOut])
     @paginate(PageNumberPagination, page_size=50)
     def list_readings(
         self,
-        request,
         sensor_id: int,
         timestamp_from: Optional[datetime] = None,
         timestamp_to: Optional[datetime] = None,
     ):
         """List readings (paginated), with optional time filters"""
-        sensor = Sensor.objects.get(id=sensor_id, owner=request.auth)
+        sensor = get_object_or_404(Sensor, id=sensor_id, owner=self.context.request.auth)
         qs = Reading.objects.filter(sensor=sensor)
         if timestamp_from:
             qs = qs.filter(timestamp__gte=timestamp_from)
@@ -44,9 +43,9 @@ class ReadingController:
             qs = qs.filter(timestamp__lte=timestamp_to)
         return qs.order_by("timestamp")
 
-    @route.post("/{sensor_id}/readings/", response=ReadingOut)
-    def create_reading(self, request, sensor_id: int, payload: ReadingIn):
+    @route.post("/", response=ReadingOut)
+    def create_reading(self, sensor_id: int, payload: ReadingIn):
         """Create a new reading for a sensor"""
-        sensor = Sensor.objects.get(id=sensor_id, owner=request.auth)
+        sensor = get_object_or_404(Sensor, id=sensor_id, owner=self.context.request.auth)
         reading = Reading.objects.create(sensor=sensor, **payload.dict())
         return reading
