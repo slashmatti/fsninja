@@ -4,3 +4,6 @@ django-ninja-jwt
 django-ninja-extra
 django-cors-headers
 psycopg[binary]
+pytest
+pytest-django
+pytest-cov
