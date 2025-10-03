@@ -1,5 +1,5 @@
 ### CRUD App
-Manage and look at plots of sensor data.
+Manage and look at plots of sensor data. Built with React frontend, Django-Ninja backend, postgresql database and Django-Ninja-JWT authentication.
 
 ### Instructions
 1. clone this repo
@@ -16,3 +16,5 @@ DB_PORT=5432
 5. `make seed` to create user `testuser@example.com // password123` with seeded sensor data
 6. log into app at `http://localhost:3000`
 7. run tests with `make test`
+
+OpenAPI auto-generated docs can be reached at `http://localhost:8000/api/docs`.
