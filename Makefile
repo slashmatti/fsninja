@@ -15,7 +15,7 @@ migrate:
 
 # Run tests
 test:
-	$(DOCKER_COMPOSE) run --rm web python manage.py test
+	$(DOCKER_COMPOSE) run --rm web pytest
 
 # Seed database with initial data
 seed:
